@@ -4,6 +4,7 @@ using CollectibleCardsTradingShopProject.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectibleCardsTradingShopProject.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241208182316_AdjustedRelationships")]
+    partial class AdjustedRelationships
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,7 +110,18 @@ namespace CollectibleCardsTradingShopProject.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ClosedUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ClosedUserId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Lots", "identity");
                 });
@@ -421,6 +435,23 @@ namespace CollectibleCardsTradingShopProject.Data.Migrations
                     b.Navigation("Lot");
 
                     b.Navigation("LotCardStatus");
+                });
+
+            modelBuilder.Entity("CollectibleCardsTradingShopProject.Models.Lot", b =>
+                {
+                    b.HasOne("CollectibleCardsTradingShopProject.Models.User", "ClosedUser")
+                        .WithMany()
+                        .HasForeignKey("ClosedUserId");
+
+                    b.HasOne("CollectibleCardsTradingShopProject.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ClosedUser");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CollectibleCardsTradingShopProject.Models.UserLot", b =>

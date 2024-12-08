@@ -4,6 +4,7 @@ using CollectibleCardsTradingShopProject.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectibleCardsTradingShopProject.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241208180506_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,7 +110,18 @@ namespace CollectibleCardsTradingShopProject.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ClosedUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ClosedUserId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Lots", "identity");
                 });
@@ -209,35 +223,6 @@ namespace CollectibleCardsTradingShopProject.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", "identity");
-                });
-
-            modelBuilder.Entity("CollectibleCardsTradingShopProject.Models.UserLot", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("DidCloseTheLot")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("LotId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LotId");
-
-                    b.HasIndex("UserId1");
-
-                    b.ToTable("UserLot", "identity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -423,19 +408,20 @@ namespace CollectibleCardsTradingShopProject.Data.Migrations
                     b.Navigation("LotCardStatus");
                 });
 
-            modelBuilder.Entity("CollectibleCardsTradingShopProject.Models.UserLot", b =>
+            modelBuilder.Entity("CollectibleCardsTradingShopProject.Models.Lot", b =>
                 {
-                    b.HasOne("CollectibleCardsTradingShopProject.Models.Lot", "Lot")
-                        .WithMany("UsersLot")
-                        .HasForeignKey("LotId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("CollectibleCardsTradingShopProject.Models.User", "ClosedUser")
+                        .WithMany("ClosedLots")
+                        .HasForeignKey("ClosedUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("CollectibleCardsTradingShopProject.Models.User", "User")
-                        .WithMany("UserLots")
-                        .HasForeignKey("UserId1");
+                        .WithMany("CreatedLots")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
-                    b.Navigation("Lot");
+                    b.Navigation("ClosedUser");
 
                     b.Navigation("User");
                 });
@@ -504,8 +490,6 @@ namespace CollectibleCardsTradingShopProject.Data.Migrations
             modelBuilder.Entity("CollectibleCardsTradingShopProject.Models.Lot", b =>
                 {
                     b.Navigation("CardInLot");
-
-                    b.Navigation("UsersLot");
                 });
 
             modelBuilder.Entity("CollectibleCardsTradingShopProject.Models.LotCardStatus", b =>
@@ -520,7 +504,9 @@ namespace CollectibleCardsTradingShopProject.Data.Migrations
 
             modelBuilder.Entity("CollectibleCardsTradingShopProject.Models.User", b =>
                 {
-                    b.Navigation("UserLots");
+                    b.Navigation("ClosedLots");
+
+                    b.Navigation("CreatedLots");
                 });
 #pragma warning restore 612, 618
         }
