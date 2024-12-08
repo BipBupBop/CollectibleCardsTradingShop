@@ -9,6 +9,6 @@
         public int RarityId { get; set; }        
         public virtual Rarity? Rarity { get; set; }
         public virtual Franchise? Franchise { get; set; }
-        public virtual ICollection<CardInLot> CardsInLots { get; set; } = new List<CardInLot>();
+        public virtual ICollection<CardInLot> CardInLots { get; set; } = new List<CardInLot>();
     }
 }
