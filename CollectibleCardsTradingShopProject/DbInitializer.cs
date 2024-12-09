@@ -132,6 +132,38 @@ namespace CollectibleCardsTradingShopProject
                 context.Set<CardInLot>().AddRange(cardInLots);
                 context.SaveChanges();
             }
+            if (!context.Set<UserLot>().Any())
+            {
+                var users = context.Users.ToList();
+                var lots = context.Set<Lot>().ToList();
+                var userLots = new List<UserLot>();
+                var random = new Random();
+
+                foreach (var lot in lots)
+                {
+                    var openingUser = users[random.Next(users.Count)];
+                    userLots.Add(new UserLot
+                    {
+                        LotId = lot.Id,
+                        UserId = openingUser.Id, 
+                        DidCloseTheLot = false 
+                    });
+
+                    if (random.Next(0, 2) == 1)
+                    {
+                        var closingUser = users[random.Next(users.Count)];
+                        userLots.Add(new UserLot
+                        {
+                            LotId = lot.Id,
+                            UserId = closingUser.Id,
+                            DidCloseTheLot = true
+                        });
+                    }
+                }
+
+                context.Set<UserLot>().AddRange(userLots);
+                context.SaveChanges();
+            }
         }
     }
 }

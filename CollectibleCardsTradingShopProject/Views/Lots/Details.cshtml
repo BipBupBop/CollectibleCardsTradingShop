@@ -1,0 +1,61 @@
+﻿@model CollectibleCardsTradingShopProject.ViewModels.LotViewModel
+
+<h1>Lot Information</h1>
+
+<div class="card mb-3">
+    <div class="card-header">
+        <h2>Opened By User</h2>
+    </div>
+    <div class="card-body">
+        <p><strong>Username:</strong> @Model.OpenedByUserName</p>
+        <p><strong>Email:</strong> @Model.OpenedByEmail</p>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-header">
+        <h2>Cards in the Lot</h2>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Image</th>
+                    <th>Franchise</th>
+                    <th>Rarity</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var card in Model.Cards)
+                {
+                        <tr>
+                            <td>@card.Name</td>
+                            <td><img src="@card.Image" alt="@card.Name" style="width:150px; height:auto;" /></td>
+                            <td>@card.Franchise</td>
+                            <td>@card.Rarity</td>
+                            <td>@card.Status</td>
+                        </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@if (Model.ClosedByUserName != null)
+{
+        <div class="card mb-3">
+            <div class="card-header">
+                <h2>Closed By User</h2>
+            </div>
+            <div class="card-body">
+                <p><strong>Username:</strong> @Model.ClosedByUserName</p>
+                <p><strong>Email:</strong> @Model.ClosedByEmail</p>
+            </div>
+        </div>
+}
+
+<p>
+    <a asp-action="Index" class="btn btn-secondary">Back to Lots</a>
+</p>
