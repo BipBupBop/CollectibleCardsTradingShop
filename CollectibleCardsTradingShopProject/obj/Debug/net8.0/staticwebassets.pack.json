@@ -2,7 +2,7 @@
   "Files": [
     {
       "Id": "C:\\Users\\Professional\\source\\repos\\CollectibleCardsTradingShopProject\\CollectibleCardsTradingShopProject\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\CollectibleCardsTradingShopProject.bundle.scp.css",
-      "PackagePath": "staticwebassets\\CollectibleCardsTradingShopProject.bundle.scp.css"
+      "PackagePath": "staticwebassets\\CollectibleCardsTradingShopProject.m4egnu2jqx.bundle.scp.css"
     },
     {
       "Id": "C:\\Users\\Professional\\source\\repos\\CollectibleCardsTradingShopProject\\CollectibleCardsTradingShopProject\\wwwroot\\css\\site.css",
@@ -243,6 +243,10 @@
     {
       "Id": "C:\\Users\\Professional\\source\\repos\\CollectibleCardsTradingShopProject\\CollectibleCardsTradingShopProject\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.CollectibleCardsTradingShopProject.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.CollectibleCardsTradingShopProject.Microsoft.AspNetCore.StaticWebAssets.props",

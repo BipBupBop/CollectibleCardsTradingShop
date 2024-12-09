@@ -64,7 +64,7 @@
         {
                 <li class="page-item">
                     <a class="page-link" asp-action="Index" 
-                    asp-route-pageNumber="@(Model.PageViewModel.PageNumber - 1)" 
+                    asp-route-page="@(Model.PageViewModel.PageNumber - 1)" 
                     asp-route-franchise="@Model.Franchise" 
                     asp-route-cardName="@Model.CardName" 
                     asp-route-rarity="@Model.Rarity">Previous</a>
@@ -79,7 +79,7 @@
 
         <li class="page-item @(1 == Model.PageViewModel.PageNumber ? "active" : "")">
             <a class="page-link" asp-action="Index" 
-            asp-route-pageNumber="1" 
+            asp-route-page="1" 
             asp-route-franchise="@Model.Franchise" 
             asp-route-cardName="@Model.CardName" 
             asp-route-rarity="@Model.Rarity">1</a>
@@ -96,7 +96,7 @@
         {
                 <li class="page-item @(i == Model.PageViewModel.PageNumber ? "active" : "")">
                     <a class="page-link" asp-action="Index" 
-                    asp-route-pageNumber="@i" 
+                    asp-route-page="@i" 
                     asp-route-franchise="@Model.Franchise" 
                     asp-route-cardName="@Model.CardName" 
                     asp-route-rarity="@Model.Rarity">@i</a>
@@ -110,7 +110,7 @@
 
         <li class="page-item @(Model.PageViewModel.TotalPages == Model.PageViewModel.PageNumber ? "active" : "")">
             <a class="page-link" asp-action="Index" 
-            asp-route-pageNumber="@Model.PageViewModel.TotalPages" 
+            asp-route-page="@Model.PageViewModel.TotalPages" 
             asp-route-franchise="@Model.Franchise" 
             asp-route-cardName="@Model.CardName" 
             asp-route-rarity="@Model.Rarity">@Model.PageViewModel.TotalPages</a>
@@ -120,7 +120,7 @@
         {
                 <li class="page-item">
                     <a class="page-link" asp-action="Index" 
-                    asp-route-pageNumber="@(Model.PageViewModel.PageNumber + 1)" 
+                        asp-route-page="@(Model.PageViewModel.PageNumber + 1)" 
                     asp-route-franchise="@Model.Franchise" 
                     asp-route-cardName="@Model.CardName" 
                     asp-route-rarity="@Model.Rarity">Next</a>
@@ -133,7 +133,7 @@
         <input type="hidden" name="cardName" value="@Model.CardName" />
         <input type="hidden" name="rarity" value="@Model.Rarity" />
         <div class="input-group">
-            <input type="number" name="pageNumber" class="form-control" 
+            <input type="number" name="page" class="form-control" 
                    placeholder="Page" 
                    min="1" 
                    max="@Model.PageViewModel.TotalPages" 
