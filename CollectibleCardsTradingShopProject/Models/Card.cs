@@ -10,5 +10,6 @@
         public virtual Rarity? Rarity { get; set; }
         public virtual Franchise? Franchise { get; set; }
         public virtual ICollection<CardInLot> CardInLots { get; set; } = new List<CardInLot>();
+        public virtual ICollection<UserCard> UserCards { get; set; } = new List<UserCard>();
     }
 }

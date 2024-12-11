@@ -14,6 +14,8 @@ namespace CollectibleCardsTradingShopProject.Data
         public virtual DbSet<LotCardStatus> LotCardStatuses { get; set; }
         public virtual DbSet<CardInLot> CardInLots { get; set; }
         public virtual DbSet<Lot> Lots { get; set; }
+        public virtual DbSet<UserCard> UserCards { get; set; }
+        public virtual DbSet<UserLot> UserLots { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
