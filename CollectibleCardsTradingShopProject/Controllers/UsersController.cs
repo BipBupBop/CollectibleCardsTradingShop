@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc;
 using CollectibleCardsTradingShopProject.ViewModels.Users;
+using Microsoft.EntityFrameworkCore;
+using CollectibleCardsTradingShopProject.Data;
 
 namespace CollectibleCardsTradingShopProject.Controllers
 {
@@ -11,12 +13,14 @@ namespace CollectibleCardsTradingShopProject.Controllers
     public class UsersController : Controller
     {
         private readonly UserManager<User> _userManager;
-        readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ApplicationDbContext _context;
 
-        public UsersController(RoleManager<IdentityRole> _roleManager, UserManager<User> _userManager)
+        public UsersController(RoleManager<IdentityRole> _roleManager, UserManager<User> _userManager, ApplicationDbContext context)
         {
             this._roleManager = _roleManager;
             this._userManager = _userManager;
+            this._context = context;
         }
         public async Task<IActionResult> Index()
         {
@@ -46,6 +50,37 @@ namespace CollectibleCardsTradingShopProject.Controllers
             }
 
             return View(userViewModel);
+        }
+
+        // GET: Cards/Details/5
+        public async Task<IActionResult> Details(string? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var userCards = _context.Cards
+            .Where(c => _context.UserCards.Any(uc => uc.CardId == c.Id && uc.UserId == user.Id))
+            .ToList();
+
+            var userDetailsView = new UserDetailsViewModel()
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                Cards = userCards
+            };
+
+            return View(user);
         }
         public IActionResult Create()
         {
