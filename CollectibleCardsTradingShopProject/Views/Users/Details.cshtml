@@ -1,3 +1,47 @@
 ﻿@model CollectibleCardsTradingShopProject.ViewModels.Users.UserDetailsViewModel
-@{
-}
+
+<h1>User Details</h1>
+
+<div class="card mb-3">
+    <div class="card-header">
+        <h2>User Information</h2>
+    </div>
+    <div class="card-body">
+        <p><strong>Username:</strong> @Model.UserName</p>
+        <p><strong>Email:</strong> @Model.Email</p>
+        <p><strong>Role:</strong> @Model.RoleName</p>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-header">
+        <h2>User's Cards</h2>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Image</th>
+                    <th>Franchise</th>
+                    <th>Rarity</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var card in Model.Cards)
+                {
+                    <tr>
+                        <td>@card.Name</td>
+                        <td><img src="@card.Image" alt="@card.Name" style="width:150px; height:auto;" /></td>
+                        <td>@card.Franchise?.Name</td>
+                        <td>@card.Rarity?.Name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<p>
+    <a asp-action="Index" class="btn btn-secondary">Back to Users</a>
+</p>

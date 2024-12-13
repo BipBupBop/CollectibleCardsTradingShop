@@ -24,29 +24,27 @@ namespace CollectibleCardsTradingShopProject.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var users = _userManager.Users.OrderBy(user => user.Id);
+            var users = _userManager.Users.OrderBy(user => user.Id).ToList();
 
-            List<UserViewModel> userViewModel = [];
-
-            string urole = "";
+            List<UserViewModel> userViewModel = new List<UserViewModel>();
 
             var rolesList = _roleManager.Roles.ToList();
+            var userRoles = _context.UserRoles.ToList(); 
+
             foreach (var user in users)
             {
-                if (rolesList.Count > 0)
+                var userRole = userRoles.FirstOrDefault(ur => ur.UserId == user.Id);
+                var roleName = userRole != null
+                    ? rolesList.FirstOrDefault(r => r.Id == userRole.RoleId)?.Name
+                    : "No Role";
+
+                userViewModel.Add(new UserViewModel
                 {
-                    urole = rolesList.FirstOrDefault().Name;
-                }
-
-                userViewModel.Add(
-                    new UserViewModel
-                    {
-                        Id = user.Id,
-                        UserName = user.UserName,
-                        Email = user.Email,
-                        RoleName = urole
-                    });
-
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    RoleName = roleName
+                });
             }
 
             return View(userViewModel);
@@ -69,18 +67,30 @@ namespace CollectibleCardsTradingShopProject.Controllers
             }
 
             var userCards = _context.Cards
-            .Where(c => _context.UserCards.Any(uc => uc.CardId == c.Id && uc.UserId == user.Id))
-            .ToList();
+                .Where(c => _context.UserCards.Any(uc => uc.CardId == c.Id && uc.UserId == user.Id))
+                .Include(c => c.Franchise)
+                .Include(c => c.Rarity)
+                .ToList();
+
+            var userRoleId = _context.UserRoles
+                .Where(ur => ur.UserId == user.Id)
+                .Select(ur => ur.RoleId)
+                .FirstOrDefault();
+
+            var role = _roleManager.Roles
+                .FirstOrDefault(r => r.Id == userRoleId)?.Name;
+
 
             var userDetailsView = new UserDetailsViewModel()
             {
                 Id = user.Id,
                 UserName = user.UserName,
+                RoleName = role,
                 Email = user.Email,
                 Cards = userCards
             };
 
-            return View(user);
+            return View(userDetailsView);
         }
         public IActionResult Create()
         {
