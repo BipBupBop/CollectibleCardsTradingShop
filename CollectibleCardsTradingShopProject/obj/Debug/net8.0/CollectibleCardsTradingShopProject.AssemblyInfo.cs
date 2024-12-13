@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CollectibleCardsTradingShopProject")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+47f9375e3a1cbbb47a91106ef5bc12ac47d2582f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d0cd4a583959393a2c4429c4098ad20dd6ca886d")]
 [assembly: System.Reflection.AssemblyProductAttribute("CollectibleCardsTradingShopProject")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CollectibleCardsTradingShopProject")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
