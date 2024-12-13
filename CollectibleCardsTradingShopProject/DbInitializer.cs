@@ -49,13 +49,13 @@ namespace CollectibleCardsTradingShopProject
             if (!context.Set<Franchise>().Any())
             {
                 var franchises = new List<Franchise>
-            {
-                new Franchise { Name = "Pokémon" },
-                new Franchise { Name = "Yu-Gi-Oh!" },
-                new Franchise { Name = "Magic: The Gathering" },
-                new Franchise { Name = "Digimon" },
-                new Franchise { Name = "Hearthstone" }
-            };
+                {
+                    new Franchise { Name = "Pokémon" },
+                    new Franchise { Name = "Yu-Gi-Oh!" },
+                    new Franchise { Name = "Magic: The Gathering" },
+                    new Franchise { Name = "Digimon" },
+                    new Franchise { Name = "Hearthstone" }
+                };
                 context.Set<Franchise>().AddRange(franchises);
                 context.SaveChanges();
             }
@@ -63,13 +63,13 @@ namespace CollectibleCardsTradingShopProject
             if (!context.Set<Rarity>().Any())
             {
                 var rarities = new List<Rarity>
-            {
-                new Rarity { Name = "Common" },
-                new Rarity { Name = "Uncommon" },
-                new Rarity { Name = "Rare" },
-                new Rarity { Name = "Ultra Rare" },
-                new Rarity { Name = "Legendary" }
-            };
+                {
+                    new Rarity { Name = "Common" },
+                    new Rarity { Name = "Uncommon" },
+                    new Rarity { Name = "Rare" },
+                    new Rarity { Name = "Ultra Rare" },
+                    new Rarity { Name = "Legendary" }
+                };
                 context.Set<Rarity>().AddRange(rarities);
                 context.SaveChanges();
             }
@@ -77,11 +77,11 @@ namespace CollectibleCardsTradingShopProject
             if (!context.Set<LotCardStatus>().Any())
             {
                 var statuses = new List<LotCardStatus>
-            {
-                new LotCardStatus { Status = "Offered" },
-                new LotCardStatus { Status = "Wanted" },
-                new LotCardStatus { Status = "Required" }
-            };
+                {
+                    new LotCardStatus { Status = "Offered" },
+                    new LotCardStatus { Status = "Wanted" },
+                    new LotCardStatus { Status = "Required" }
+                };
                 context.Set<LotCardStatus>().AddRange(statuses);
                 context.SaveChanges();
             }
@@ -96,7 +96,7 @@ namespace CollectibleCardsTradingShopProject
                     var card = new Card
                     {
                         Name = $"Card_{i + 1}",
-                        Image = $@"\images\Image_{i + 1}.png",
+                        Image = $"\\images\\Image_{i + 1}.png",
                         FranchiseId = franchises[new Random().Next(franchises.Count)].Id,
                         RarityId = rarities[new Random().Next(rarities.Count)].Id
                     };
@@ -132,6 +132,7 @@ namespace CollectibleCardsTradingShopProject
                 context.Set<CardInLot>().AddRange(cardInLots);
                 context.SaveChanges();
             }
+
             if (!context.Set<UserLot>().Any())
             {
                 var users = context.Users.ToList();
@@ -145,8 +146,8 @@ namespace CollectibleCardsTradingShopProject
                     userLots.Add(new UserLot
                     {
                         LotId = lot.Id,
-                        UserId = openingUser.Id, 
-                        DidCloseTheLot = false 
+                        UserId = openingUser.Id,
+                        DidCloseTheLot = false
                     });
 
                     if (random.Next(0, 2) == 1)
@@ -162,6 +163,27 @@ namespace CollectibleCardsTradingShopProject
                 }
 
                 context.Set<UserLot>().AddRange(userLots);
+                context.SaveChanges();
+            }
+
+            if (!context.Set<UserCard>().Any())
+            {
+                var users = context.Users.ToList();
+                var cards = context.Set<Card>().ToList();
+                var userCards = new List<UserCard>();
+                var random = new Random();
+
+                foreach (var user in users)
+                {
+                    var assignedCards = cards.OrderBy(c => random.Next()).Take(random.Next(10, 51)).ToList();
+                    userCards.AddRange(assignedCards.Select(card => new UserCard
+                    {
+                        UserId = user.Id,
+                        CardId = card.Id
+                    }));
+                }
+
+                context.Set<UserCard>().AddRange(userCards);
                 context.SaveChanges();
             }
         }
