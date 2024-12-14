@@ -105,7 +105,8 @@ namespace CollectibleCardsTradingShopProject.Controllers
                         Image = cl.Card.Image,
                         Franchise = cl.Card.Franchise.Name,
                         Rarity = cl.Card.Rarity.Name,
-                        Status = cl.LotCardStatus.Status
+                        Status = cl.LotCardStatus.Status,
+                        Quantity = cl.Quantity
                     }).ToList(),
                     ClosedByUserName = l.UsersLot
                         .Where(ul => ul.DidCloseTheLot)

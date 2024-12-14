@@ -22,6 +22,7 @@ namespace CollectibleCardsTradingShopProject.ViewModels
             public string Franchise { get; set; } = null!;
             public string Rarity { get; set; } = null!;
             public string Status { get; set; } = null!;
+            public int Quantity { get; set; }
         }
     }
 }
