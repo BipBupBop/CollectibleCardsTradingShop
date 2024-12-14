@@ -25,16 +25,18 @@
                     <th>Image</th>
                     <th>Franchise</th>
                     <th>Rarity</th>
+                    <th>Quantity</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var card in Model.Cards)
+                @foreach (var userCard in Model.Cards)
                 {
                     <tr>
-                        <td>@card.Name</td>
-                        <td><img src="@card.Image" alt="@card.Name" style="width:150px; height:auto;" /></td>
-                        <td>@card.Franchise?.Name</td>
-                        <td>@card.Rarity?.Name</td>
+                        <td>@userCard.Card.Name</td>
+                        <td><img src="@userCard.Card.Image" alt="@userCard.Card.Name" style="width:150px; height:auto;" /></td>
+                        <td>@userCard.Card.Franchise?.Name</td>
+                        <td>@userCard.Card.Rarity?.Name</td>
+                        <td>@userCard.Quantity</td>
                     </tr>
                 }
             </tbody>

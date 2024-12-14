@@ -10,6 +10,6 @@ namespace CollectibleCardsTradingShopProject.ViewModels.Users
         [EmailAddress(ErrorMessage = "Incorrect address")]
         public string? Email { get; set; }
         public string? RoleName { get; set; }
-        public virtual ICollection<Card> Cards { get; set; } = new List<Card>();
+        public virtual ICollection<UserCardViewModel> Cards { get; set; } = new List<UserCardViewModel>();
     }
 }

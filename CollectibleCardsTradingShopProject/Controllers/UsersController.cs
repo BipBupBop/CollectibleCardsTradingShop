@@ -66,11 +66,22 @@ namespace CollectibleCardsTradingShopProject.Controllers
                 return NotFound();
             }
 
-            var userCards = _context.Cards
+            var userRawCards = _context.Cards
                 .Where(c => _context.UserCards.Any(uc => uc.CardId == c.Id && uc.UserId == user.Id))
                 .Include(c => c.Franchise)
                 .Include(c => c.Rarity)
                 .ToList();
+
+            var userCards = new List<UserCardViewModel>();
+
+            foreach (var card in userRawCards)
+            {
+                int quantity = _context.UserCards
+                    .FirstOrDefault(uc => uc.CardId == card.Id && uc.UserId == id)
+                    .Quantity;
+                userCards.Add(new UserCardViewModel() { Card = card, Quantity = quantity });
+            }
+                
 
             var userRoleId = _context.UserRoles
                 .Where(ur => ur.UserId == user.Id)
