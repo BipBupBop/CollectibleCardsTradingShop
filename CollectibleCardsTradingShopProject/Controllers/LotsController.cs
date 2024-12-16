@@ -32,6 +32,16 @@ namespace CollectibleCardsTradingShopProject.Controllers
 
             var lotsQuery = _context.Lots.AsQueryable();
 
+            if (seekOpened)
+            {
+                lotsQuery = _context.UserLots
+                    .Where(ul => ul.DidCloseTheLot == false)
+                    .Select(ul => ul.Lot)
+                    .AsQueryable()
+                    .Where(lot => !_context.UserLots
+                        .Any(ul => ul.LotId == lot.Id && ul.DidCloseTheLot == true));
+            }
+
             if (!string.IsNullOrEmpty(franchise))
             {
                 lotsQuery = lotsQuery.Where(l => l.CardInLot.Any(cl => cl.Card.Franchise.Name.Contains(franchise)));
@@ -45,18 +55,7 @@ namespace CollectibleCardsTradingShopProject.Controllers
             if (!string.IsNullOrEmpty(rarity))
             {
                 lotsQuery = lotsQuery.Where(l => l.CardInLot.Any(cl => cl.Card.Rarity.Name.Contains(rarity)));
-            }
-
-            if(seekOpened)
-            {
-                lotsQuery = _context.UserLots
-                    .Where(ul => ul.DidCloseTheLot == false)
-                    .Select(ul => ul.Lot)
-                    .AsQueryable()
-                    .Where(lot => !_context.UserLots
-                        .Any(ul => ul.LotId == lot.Id && ul.DidCloseTheLot == true));
-
-            }
+            }            
 
             var count = await lotsQuery.CountAsync();
 
@@ -90,6 +89,60 @@ namespace CollectibleCardsTradingShopProject.Controllers
             };
 
             return View(viewModel);
+        }
+
+        public async Task<IActionResult> MyLots(int page = 1)
+        {
+            const int pageSize = 10;
+            page = page < 1 ? 1 : page;
+
+            var lotsQuery = _context.Lots.AsQueryable();
+
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (currentUserId == null)
+            {
+                return Unauthorized(); // Убедимся, что пользователь аутентифицирован
+            }
+
+            lotsQuery = _context.UserLots
+                    .Where(ul => ul.UserId == currentUserId)
+                    .Select(ul => ul.Lot)
+                    .AsQueryable()
+                    .Where(lot => !_context.UserLots
+                        .Any(ul => ul.LotId == lot.Id && ul.DidCloseTheLot == true));
+
+            var count = await lotsQuery.CountAsync();
+
+            var lots = await lotsQuery
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(l => new LotViewModel
+                {
+                    LotId = l.Id,
+                    OpenedByUserName = l.UsersLot
+                        .Where(ul => !ul.DidCloseTheLot)
+                        .Select(ul => ul.User.UserName)
+                        .FirstOrDefault(),
+                    CardsSummary = string.Join(", ", l.CardInLot.Select(cl => cl.Card.Name).Take(5)) +
+                                   (l.CardInLot.Count() > 5 ? "..." : ""),
+                    ClosedByUserName = l.UsersLot
+                        .Where(ul => ul.DidCloseTheLot)
+                        .Select(ul => ul.User.UserName)
+                        .FirstOrDefault()
+                })
+                .ToListAsync();
+
+            var viewModel = new LotFilterViewModel
+            {
+                Franchise = "",
+                CardName = "",
+                Rarity = "",
+                Lots = lots,
+                SeekOpened = false,
+                PageViewModel = new PageViewModel(count, page, pageSize)
+            };
+
+            return View("Index", viewModel);
         }
 
         // GET: Lots/Details/5

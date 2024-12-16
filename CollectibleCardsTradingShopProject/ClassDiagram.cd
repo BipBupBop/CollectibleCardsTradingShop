@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CollectibleCardsTradingShopProject.Models.Card">
+    <Position X="1" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAACAAAAAAAAAAAAIAAAABQAAAAgQBAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Card.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.Models.CardInLot">
+    <Position X="2.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAFCAAAAAAAAAAAEAAAAAAAIAAgAAAAAAAAAgAgAAAA=</HashCode>
+      <FileName>Models\CardInLot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.Models.ErrorViewModel" Collapsed="true">
+    <Position X="12.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ErrorViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.Models.Franchise">
+    <Position X="1" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Franchise.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.Models.Lot">
+    <Position X="2.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAABAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Lot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.Models.LotCardStatus">
+    <Position X="2.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAACAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\LotCardStatus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.Models.Rarity">
+    <Position X="1" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Rarity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.Models.User">
+    <Position X="4.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Models\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.Models.UserCard">
+    <Position X="4.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABDAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAgAgAAAA=</HashCode>
+      <FileName>Models\UserCard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.Models.UserLot">
+    <Position X="4.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAAAAAAAAAEAAAAAAgAAAgAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Models\UserLot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

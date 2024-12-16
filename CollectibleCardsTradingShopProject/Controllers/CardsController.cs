@@ -10,6 +10,7 @@ using CollectibleCardsTradingShopProject.Models;
 using CollectibleCardsTradingShopProject.ViewModels;
 using Microsoft.Data.SqlClient;
 using System.Drawing.Printing;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CollectibleCardsTradingShopProject.Controllers
 {
@@ -106,6 +107,7 @@ namespace CollectibleCardsTradingShopProject.Controllers
         }
 
         // GET: Cards/Create
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             ViewData["FranchiseId"] = new SelectList(_context.Franchises, "Id", "Id");
@@ -118,6 +120,7 @@ namespace CollectibleCardsTradingShopProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create([Bind("Id,Name,Image,FranchiseId,RarityId")] Card card)
         {
             if (ModelState.IsValid)
@@ -132,6 +135,7 @@ namespace CollectibleCardsTradingShopProject.Controllers
         }
 
         // GET: Cards/Edit/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -154,6 +158,7 @@ namespace CollectibleCardsTradingShopProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Image,FranchiseId,RarityId")] Card card)
         {
             if (id != card.Id)
@@ -187,6 +192,7 @@ namespace CollectibleCardsTradingShopProject.Controllers
         }
 
         // GET: Cards/Delete/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -209,6 +215,7 @@ namespace CollectibleCardsTradingShopProject.Controllers
         // POST: Cards/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var card = await _context.Cards.FindAsync(id);
