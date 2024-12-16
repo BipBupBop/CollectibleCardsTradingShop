@@ -25,7 +25,7 @@ namespace CollectibleCardsTradingShopProject.Controllers
         }
 
         // GET: Lots
-        public async Task<IActionResult> Index(string franchise, string cardName, string rarity, int page = 1)
+        public async Task<IActionResult> Index(string franchise, string cardName, string rarity, bool seekOpened, int page = 1)
         {
             const int pageSize = 10;
             page = page < 1 ? 1 : page; 
@@ -45,6 +45,17 @@ namespace CollectibleCardsTradingShopProject.Controllers
             if (!string.IsNullOrEmpty(rarity))
             {
                 lotsQuery = lotsQuery.Where(l => l.CardInLot.Any(cl => cl.Card.Rarity.Name.Contains(rarity)));
+            }
+
+            if(seekOpened)
+            {
+                lotsQuery = _context.UserLots
+                    .Where(ul => ul.DidCloseTheLot == false)
+                    .Select(ul => ul.Lot)
+                    .AsQueryable()
+                    .Where(lot => !_context.UserLots
+                        .Any(ul => ul.LotId == lot.Id && ul.DidCloseTheLot == true));
+
             }
 
             var count = await lotsQuery.CountAsync();
@@ -74,6 +85,7 @@ namespace CollectibleCardsTradingShopProject.Controllers
                 CardName = cardName,
                 Rarity = rarity,
                 Lots = lots,
+                SeekOpened = seekOpened,
                 PageViewModel = new PageViewModel(count, page, pageSize)
             };
 

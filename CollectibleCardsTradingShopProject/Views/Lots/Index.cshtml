@@ -22,6 +22,9 @@
             @Html.TextBox("rarity", Model.Rarity, new { @class = "form-control", placeholder = "Rarity" })
             </div>
             <div class="col-md-3">
+            @Html.CheckBox("seekOpened", Model.SeekOpened)
+            </div>
+            <div class="col-md-3">
                 <button type="submit" class="btn btn-primary">Filter</button>
                 <a asp-action="Index" class="btn btn-secondary">Reset</a>
             </div>
@@ -67,8 +70,9 @@
                     <a class="page-link" asp-action="Index" 
                     asp-route-page="@(Model.PageViewModel.PageNumber - 1)" 
                     asp-route-franchise="@Model.Franchise" 
-                    asp-route-cardName="@Model.CardName" 
-                    asp-route-rarity="@Model.Rarity">Previous</a>
+                    asp-route-cardName="@Model.CardName"
+                   asp-route-rarity="@Model.Rarity"
+                   asp-route-seekOpened="@Model.SeekOpened">Previous</a>
                 </li>
         }
         @* else
@@ -82,8 +86,9 @@
             <a class="page-link" asp-action="Index" 
             asp-route-page="1" 
             asp-route-franchise="@Model.Franchise" 
-            asp-route-cardName="@Model.CardName" 
-            asp-route-rarity="@Model.Rarity">1</a>
+            asp-route-cardName="@Model.CardName"
+               asp-route-rarity="@Model.Rarity"
+               asp-route-seekOpened="@Model.SeekOpened">1</a>
         </li>
 
         @if (Model.PageViewModel.PageNumber > 3)
@@ -99,8 +104,9 @@
                     <a class="page-link" asp-action="Index" 
                     asp-route-page="@i" 
                     asp-route-franchise="@Model.Franchise" 
-                    asp-route-cardName="@Model.CardName" 
-                    asp-route-rarity="@Model.Rarity">@i</a>
+                    asp-route-cardName="@Model.CardName"
+                   asp-route-rarity="@Model.Rarity"
+                   asp-route-seekOpened="@Model.SeekOpened">@i</a>
                 </li>
         }
 
@@ -113,8 +119,9 @@
             <a class="page-link" asp-action="Index" 
             asp-route-page="@Model.PageViewModel.TotalPages" 
             asp-route-franchise="@Model.Franchise" 
-            asp-route-cardName="@Model.CardName" 
-            asp-route-rarity="@Model.Rarity">@Model.PageViewModel.TotalPages</a>
+            asp-route-cardName="@Model.CardName"
+               asp-route-rarity="@Model.Rarity"
+               asp-route-seekOpened="@Model.SeekOpened">@Model.PageViewModel.TotalPages</a>
         </li>
 
         @if (Model.PageViewModel.HasNextPage)
@@ -124,7 +131,8 @@
                         asp-route-page="@(Model.PageViewModel.PageNumber + 1)" 
                     asp-route-franchise="@Model.Franchise" 
                     asp-route-cardName="@Model.CardName" 
-                    asp-route-rarity="@Model.Rarity">Next</a>
+                    asp-route-rarity="@Model.Rarity"
+                    asp-route-seekOpened="@Model.SeekOpened">Next</a>
                 </li>
         }
     </ul>
@@ -133,12 +141,13 @@
         <input type="hidden" name="franchise" value="@Model.Franchise" />
         <input type="hidden" name="cardName" value="@Model.CardName" />
         <input type="hidden" name="rarity" value="@Model.Rarity" />
+        <input type="hidden" name="seekOpened" value="@Model.SeekOpened.ToString().ToLower()" />
         <div class="input-group">
             <input type="number" name="page" class="form-control" 
                    placeholder="Page" 
                    min="1" 
                    max="@Model.PageViewModel.TotalPages" 
-                   value="@Model.PageViewModel.PageNumber" />  <!-- Обновлено для корректного отображения текущей страницы -->
+                   value="@Model.PageViewModel.PageNumber" />  
             <button type="submit" class="btn btn-primary">Go</button>
         </div>
     </form>
