@@ -14,6 +14,7 @@ namespace CollectibleCardsTradingShopProject.ViewModels
         public string? ClosedByEmail { get; set; }
 
         public string CardsSummary { get; set; } = null!;
+        public bool CurrentUserWatchingIsNotOwner { get; set; }
 
         public class CardInfo
         {

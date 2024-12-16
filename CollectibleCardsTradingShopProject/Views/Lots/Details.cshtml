@@ -1,6 +1,8 @@
-﻿@model CollectibleCardsTradingShopProject.ViewModels.LotViewModel
+﻿@using CollectibleCardsTradingShopProject.ViewModels;
+@model LotViewModel
 
 <h1>Lot Information</h1>
+<h1>Id @Model.LotId</h1>
 
 <div class="card mb-3">
     <div class="card-header">
@@ -31,14 +33,14 @@
             <tbody>
                 @foreach (var card in Model.Cards)
                 {
-                        <tr>
-                            <td>@card.Name</td>
-                            <td><img src="@card.Image" alt="@card.Name" style="width:150px; height:auto;" /></td>
-                            <td>@card.Franchise</td>
-                            <td>@card.Rarity</td>
-                            <td>@card.Status</td>
-                            <td>@card.Quantity</td>
-                        </tr>
+                    <tr>
+                        <td>@card.Name</td>
+                        <td><img src="@card.Image" alt="@card.Name" style="width:150px; height:auto;" /></td>
+                        <td>@card.Franchise</td>
+                        <td>@card.Rarity</td>
+                        <td>@card.Status</td>
+                        <td>@card.Quantity</td>
+                    </tr>
                 }
             </tbody>
         </table>
@@ -47,17 +49,26 @@
 
 @if (Model.ClosedByUserName != null)
 {
-        <div class="card mb-3">
-            <div class="card-header">
-                <h2>Closed By User</h2>
-            </div>
-            <div class="card-body">
-                <p><strong>Username:</strong> @Model.ClosedByUserName</p>
-                <p><strong>Email:</strong> @Model.ClosedByEmail</p>
-            </div>
+    <div class="card mb-3">
+        <div class="card-header">
+            <h2>Closed By User</h2>
         </div>
+        <div class="card-body">
+            <p><strong>Username:</strong> @Model.ClosedByUserName</p>
+            <p><strong>Email:</strong> @Model.ClosedByEmail</p>
+        </div>
+    </div>
+}
+
+@if (Model.CurrentUserWatchingIsNotOwner && Model.ClosedByUserName == null && Model.ClosedByEmail == null)
+{
+    <form method="post" asp-action="ApplyByCurrentUser" asp-controller="Lots">
+        <input type="hidden" name="lotId" value="@Model.LotId" />
+        <button type="submit" class="btn btn-primary">Apply</button>
+    </form>
 }
 
 <p>
     <a asp-action="Index" class="btn btn-secondary">Back to Lots</a>
 </p>
+

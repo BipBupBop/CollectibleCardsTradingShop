@@ -9,6 +9,8 @@ using CollectibleCardsTradingShopProject.Data;
 using CollectibleCardsTradingShopProject.Models;
 using CollectibleCardsTradingShopProject.ViewModels;
 using System.Drawing.Printing;
+using System.Security.Claims;
+using CollectibleCardsTradingShopProject.ViewModels.Users;
 
 namespace CollectibleCardsTradingShopProject.Controllers
 {
@@ -25,33 +27,28 @@ namespace CollectibleCardsTradingShopProject.Controllers
         // GET: Lots
         public async Task<IActionResult> Index(string franchise, string cardName, string rarity, int page = 1)
         {
-            const int pageSize = 10; // Количество записей на странице
-            page = page < 1 ? 1 : page; // Убедимся, что страница не меньше 1
+            const int pageSize = 10;
+            page = page < 1 ? 1 : page; 
 
             var lotsQuery = _context.Lots.AsQueryable();
 
-            // Фильтрация по франшизе
             if (!string.IsNullOrEmpty(franchise))
             {
                 lotsQuery = lotsQuery.Where(l => l.CardInLot.Any(cl => cl.Card.Franchise.Name.Contains(franchise)));
             }
 
-            // Фильтрация по названию карты
             if (!string.IsNullOrEmpty(cardName))
             {
                 lotsQuery = lotsQuery.Where(l => l.CardInLot.Any(cl => cl.Card.Name.Contains(cardName)));
             }
 
-            // Фильтрация по редкости
             if (!string.IsNullOrEmpty(rarity))
             {
                 lotsQuery = lotsQuery.Where(l => l.CardInLot.Any(cl => cl.Card.Rarity.Name.Contains(rarity)));
             }
 
-            // Подсчет общего количества записей
             var count = await lotsQuery.CountAsync();
 
-            // Применение пагинации
             var lots = await lotsQuery
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -71,7 +68,6 @@ namespace CollectibleCardsTradingShopProject.Controllers
                 })
                 .ToListAsync();
 
-            // Создание ViewModel
             var viewModel = new LotFilterViewModel
             {
                 Franchise = franchise,
@@ -91,6 +87,7 @@ namespace CollectibleCardsTradingShopProject.Controllers
                 .Where(l => l.Id == id)
                 .Select(l => new LotViewModel
                 {
+                    LotId = l.Id,
                     OpenedByUserName = l.UsersLot
                         .Where(ul => !ul.DidCloseTheLot)
                         .Select(ul => ul.User.UserName)
@@ -124,43 +121,217 @@ namespace CollectibleCardsTradingShopProject.Controllers
                 return NotFound();
             }
 
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (currentUserId == null)
+            {
+                return Unauthorized();
+            }
+
+            if(lot.OpenedByEmail != _context.Users.Where(u => u.Id == currentUserId).FirstOrDefault().Email)
+                lot.CurrentUserWatchingIsNotOwner = true;
+
             return View(lot);
         }
 
-        // GET: Lots/Create
+        [HttpPost]
+        public IActionResult ApplyByCurrentUser(int lotId)
+        {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (currentUserId == null)
+            {
+                return Unauthorized();
+            }
+
+            // Получаем карты, которые нужны для выполнения лота
+            var lotCardsRequired = _context.CardInLots
+                .Where(cl => cl.LotId == lotId)
+                .Where(cl => cl.LotCardStatusId == 3) // 3 is "required"
+                .Select(cl => cl.Card)
+                .ToList();
+
+            // Карты текущего пользователя
+            var currentUserCards = _context.UserCards
+                .Where(uc => uc.UserId == currentUserId)
+                .ToList();
+
+            // Проверяем, что у текущего пользователя есть все нужные карты
+            bool userHasRequiredCards = lotCardsRequired.All(card =>
+                currentUserCards.Any(uc => uc.CardId == card.Id && uc.Quantity > 0));
+
+            if (!userHasRequiredCards)
+            {
+                return BadRequest("You do not have all the required cards for this lot.");
+            }
+
+            // Получаем карты, которые пользователь должен получить
+            var lotCardsToReceive = _context.CardInLots
+                .Where(cl => cl.LotId == lotId)
+                .Where(cl => cl.LotCardStatusId == 1) // 1 is "to receive"
+                .Select(cl => cl.Card)
+                .ToList();
+
+            // Определяем владельца лота
+            string ownerId = _context.UserLots
+                .Where(ul => ul.LotId == lotId)
+                .Select(ul => ul.UserId)
+                .FirstOrDefault();
+
+            if (ownerId == null)
+            {
+                return BadRequest("Lot owner not found.");
+            }
+
+            // Карты владельца лота
+            var ownerCards = _context.UserCards
+                .Where(uc => uc.UserId == ownerId)
+                .ToList();
+
+            // Проверяем, что у владельца лота есть все карты, которые пользователь должен получить
+            bool ownerHasRequiredCards = lotCardsToReceive.All(card =>
+                ownerCards.Any(uc => uc.CardId == card.Id && uc.Quantity > 0));
+
+            if (!ownerHasRequiredCards)
+            {
+                return BadRequest("The lot owner does not have all the required cards.");
+            }
+
+            // Если проверки прошли, выполняем транзакцию
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    TransactCards(currentUserId, lotId);
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    return StatusCode(500, "An error occurred while processing the transaction.");
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
+
+        private void TransactCards(string currentUserId, int lotId)
+        {
+            var cardsToGive = _context.CardInLots
+                .Include(cl => cl.Card.Franchise)
+                .Include(cl => cl.Card.Rarity)
+                .Where(cl => cl.LotId == lotId && cl.LotCardStatusId == 3)
+                .Select(cl => cl.Card)
+                .ToList();
+
+            var cardsToRecieve = _context.CardInLots
+                .Include(cl => cl.Card.Franchise)
+                .Include(cl => cl.Card.Rarity)
+                .Where(cl => cl.LotId == lotId && cl.LotCardStatusId == 1)
+                .Select(cl => cl.Card)
+                .ToList();
+
+            string ownerId = _context.UserLots
+                .Where(ul => ul.LotId == lotId)
+                .Select(ul => ul.UserId)
+                .FirstOrDefault();
+
+            foreach (var card in cardsToGive)
+            {
+                var userCard = _context.UserCards
+                    .FirstOrDefault(uc => uc.UserId == currentUserId && uc.CardId == card.Id);
+
+                if (userCard != null)
+                {
+                    userCard.Quantity--;
+                    if (userCard.Quantity <= 0)
+                    {
+                        _context.UserCards.Remove(userCard);
+                    }
+                }
+
+                var ownerCard = _context.UserCards
+                    .FirstOrDefault(uc => uc.UserId == ownerId && uc.CardId == card.Id);
+
+                if (ownerCard != null)
+                {
+                    ownerCard.Quantity++;
+                }
+                else
+                {
+                    _context.UserCards.Add(new UserCard
+                    {
+                        UserId = ownerId,
+                        CardId = card.Id,
+                        Quantity = 1
+                    });
+                }
+            }
+
+            foreach (var card in cardsToRecieve)
+            {
+                var ownerCard = _context.UserCards
+                    .FirstOrDefault(uc => uc.UserId == ownerId && uc.CardId == card.Id);
+
+                if (ownerCard != null)
+                {
+                    ownerCard.Quantity--;
+                    if (ownerCard.Quantity <= 0)
+                    {
+                        _context.UserCards.Remove(ownerCard);
+                    }
+                }
+
+                var userCard = _context.UserCards
+                    .FirstOrDefault(uc => uc.UserId == currentUserId && uc.CardId == card.Id);
+
+                if (userCard != null)
+                {
+                    userCard.Quantity++;
+                }
+                else
+                {
+                    _context.UserCards.Add(new UserCard
+                    {
+                        UserId = currentUserId,
+                        CardId = card.Id,
+                        Quantity = 1
+                    });
+                }
+            }
+
+            _context.UserLots.Add(new UserLot()
+            {
+                UserId = currentUserId,
+                DidCloseTheLot = true,
+                LotId = lotId 
+            });
+
+            _context.SaveChanges();
+        }
+
+
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Lots/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id")] Lot lot)
         {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (currentUserId == null)
+            {
+                return Unauthorized(); // Убедимся, что пользователь аутентифицирован
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(lot);
                 await _context.SaveChangesAsync();
+                _context.UserLots.Add(new UserLot { UserId = currentUserId, LotId = lot.Id });
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            return View(lot);
-        }
-
-        // GET: Lots/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var lot = await _context.Lots.FindAsync(id);
-            if (lot == null)
-            {
-                return NotFound();
             }
             return View(lot);
         }

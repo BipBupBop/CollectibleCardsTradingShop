@@ -1,23 +1,30 @@
-﻿@model CollectibleCardsTradingShopProject.ViewModels.CreateLotViewModel
+﻿@model CollectibleCardsTradingShopProject.Models.Lot
 
 @{
-    ViewData["Title"] = "Создание лота";
+    ViewData["Title"] = "Create";
 }
 
-<h2>Создание лота</h2>
+<h1>Create</h1>
 
-<form asp-action="Create">
-    <div class="form-group">
-        <label for="Cards">Выберите карты:</label>
-        <select asp-for="SelectedCards" asp-items="Model.Cards" class="form-control" multiple="multiple"></select>
+<h4>Lot</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
-    <div class="form-group">
-        <label for="CardStatuses">Выберите статус для каждой карты:</label>
-        <select asp-for="SelectedStatuses" asp-items="Model.Statuses" class="form-control">
-            <option value="Предлагаю">Предлагаю</option>
-            <option value="Желаю">Желаю</option>
-            <option value="Требую">Требую</option>
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Создать лот</button>
-</form>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

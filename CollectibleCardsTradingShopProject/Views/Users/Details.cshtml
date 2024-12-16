@@ -21,6 +21,7 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
+                    <th>Id</th>
                     <th>Name</th>
                     <th>Image</th>
                     <th>Franchise</th>
@@ -32,6 +33,7 @@
                 @foreach (var userCard in Model.Cards)
                 {
                     <tr>
+                        <td>@userCard.Card.Id</td>
                         <td>@userCard.Card.Name</td>
                         <td><img src="@userCard.Card.Image" alt="@userCard.Card.Name" style="width:150px; height:auto;" /></td>
                         <td>@userCard.Card.Franchise?.Name</td>
