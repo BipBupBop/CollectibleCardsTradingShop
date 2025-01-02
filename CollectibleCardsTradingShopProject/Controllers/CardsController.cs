@@ -110,8 +110,8 @@ namespace CollectibleCardsTradingShopProject.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
-            ViewData["FranchiseId"] = new SelectList(_context.Franchises, "Id", "Id");
-            ViewData["RarityId"] = new SelectList(_context.Rarities, "Id", "Id");
+            ViewData["FranchiseId"] = new SelectList(_context.Franchises, "Id", "Name");
+            ViewData["RarityId"] = new SelectList(_context.Rarities, "Id", "Name");
             return View();
         }
 
@@ -148,8 +148,8 @@ namespace CollectibleCardsTradingShopProject.Controllers
             {
                 return NotFound();
             }
-            ViewData["FranchiseId"] = new SelectList(_context.Franchises, "Id", "Id", card.FranchiseId);
-            ViewData["RarityId"] = new SelectList(_context.Rarities, "Id", "Id", card.RarityId);
+            ViewData["FranchiseId"] = new SelectList(_context.Franchises, "Id", "Name", card.FranchiseId);
+            ViewData["RarityId"] = new SelectList(_context.Rarities, "Id", "Name", card.RarityId);
             return View(card);
         }
 

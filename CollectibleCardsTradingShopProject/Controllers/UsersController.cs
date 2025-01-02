@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using CollectibleCardsTradingShopProject.ViewModels.Users;
 using Microsoft.EntityFrameworkCore;
 using CollectibleCardsTradingShopProject.Data;
+using CollectibleCardsTradingShopProject.ViewModels;
 
 namespace CollectibleCardsTradingShopProject.Controllers
 {
@@ -219,6 +220,46 @@ namespace CollectibleCardsTradingShopProject.Controllers
                 IdentityResult result = await _userManager.DeleteAsync(user);
             }
             return RedirectToAction("Index");
+        }
+
+        
+        public async Task<IActionResult> AddCardToUser(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
+            ViewData["UserId"] = id; 
+            ViewData["CardId"] = new SelectList(_context.Cards, "Id", "Name");
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddCardToUser(CardInUserViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewData["CardId"] = new SelectList(_context.Cards, "Id", "Name", model.CardId);
+                return View(model);
+            }
+
+            var user = await _context.Users.FindAsync(model.UserId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var card = new UserCard
+            {
+                UserId = model.UserId,
+                CardId = model.CardId,
+                Quantity = model.Quantity
+            };
+
+            _context.UserCards.Add(card);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

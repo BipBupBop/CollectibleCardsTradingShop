@@ -11,6 +11,8 @@ using CollectibleCardsTradingShopProject.ViewModels;
 using System.Drawing.Printing;
 using System.Security.Claims;
 using CollectibleCardsTradingShopProject.ViewModels.Users;
+using CollectibleCardsTradingShopProject.ViewModels.CreateLot;
+using Newtonsoft.Json;
 
 namespace CollectibleCardsTradingShopProject.Controllers
 {
@@ -207,19 +209,16 @@ namespace CollectibleCardsTradingShopProject.Controllers
                 return Unauthorized();
             }
 
-            // Получаем карты, которые нужны для выполнения лота
             var lotCardsRequired = _context.CardInLots
                 .Where(cl => cl.LotId == lotId)
                 .Where(cl => cl.LotCardStatusId == 3) // 3 is "required"
                 .Select(cl => cl.Card)
                 .ToList();
 
-            // Карты текущего пользователя
             var currentUserCards = _context.UserCards
                 .Where(uc => uc.UserId == currentUserId)
                 .ToList();
 
-            // Проверяем, что у текущего пользователя есть все нужные карты
             bool userHasRequiredCards = lotCardsRequired.All(card =>
                 currentUserCards.Any(uc => uc.CardId == card.Id && uc.Quantity > 0));
 
@@ -228,14 +227,12 @@ namespace CollectibleCardsTradingShopProject.Controllers
                 return BadRequest("You do not have all the required cards for this lot.");
             }
 
-            // Получаем карты, которые пользователь должен получить
             var lotCardsToReceive = _context.CardInLots
                 .Where(cl => cl.LotId == lotId)
                 .Where(cl => cl.LotCardStatusId == 1) // 1 is "to receive"
                 .Select(cl => cl.Card)
                 .ToList();
 
-            // Определяем владельца лота
             string ownerId = _context.UserLots
                 .Where(ul => ul.LotId == lotId)
                 .Select(ul => ul.UserId)
@@ -246,12 +243,10 @@ namespace CollectibleCardsTradingShopProject.Controllers
                 return BadRequest("Lot owner not found.");
             }
 
-            // Карты владельца лота
             var ownerCards = _context.UserCards
                 .Where(uc => uc.UserId == ownerId)
                 .ToList();
 
-            // Проверяем, что у владельца лота есть все карты, которые пользователь должен получить
             bool ownerHasRequiredCards = lotCardsToReceive.All(card =>
                 ownerCards.Any(uc => uc.CardId == card.Id && uc.Quantity > 0));
 
@@ -260,7 +255,6 @@ namespace CollectibleCardsTradingShopProject.Controllers
                 return BadRequest("The lot owner does not have all the required cards.");
             }
 
-            // Если проверки прошли, выполняем транзакцию
             using (var transaction = _context.Database.BeginTransaction())
             {
                 try
@@ -387,7 +381,7 @@ namespace CollectibleCardsTradingShopProject.Controllers
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (currentUserId == null)
             {
-                return Unauthorized(); // Убедимся, что пользователь аутентифицирован
+                return Unauthorized();
             }
 
             if (ModelState.IsValid)
@@ -400,6 +394,82 @@ namespace CollectibleCardsTradingShopProject.Controllers
             }
             return View(lot);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> CreateLot(
+    string userSearchQuery ="",
+    string dbSearchQuery ="",
+    int userPage = 1,
+    int dbPage = 1,
+    string offeredCardsData = null,
+    string requiredCardsData = null)
+        {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (currentUserId == null)
+            {
+                return Unauthorized();
+            }
+
+            var userCardsQuery = _context.UserCards
+                .Where(uc => uc.UserId == currentUserId)
+                .Select(uc => new LotCardViewModel
+                {
+                    Id = uc.Card.Id,
+                    Name = uc.Card.Name,
+                    Image = uc.Card.Image,
+                    Franchise = uc.Card.Franchise.Name,
+                    Rarity = uc.Card.Rarity.Name,
+                    Quantity = uc.Quantity
+                });
+
+            if (!string.IsNullOrWhiteSpace(userSearchQuery))
+            {
+                userCardsQuery = userCardsQuery.Where(c => c.Name.Contains(userSearchQuery));
+            }
+
+            var userCards = await PaginatedList<LotCardViewModel>.CreateAsync(userCardsQuery, userPage, 5);
+
+            var databaseCardsQuery = _context.Cards
+                .Select(c => new LotCardViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Image = c.Image,
+                    Franchise = c.Franchise.Name,
+                    Rarity = c.Rarity.Name,
+                    Quantity = 1
+                });
+
+            if (!string.IsNullOrWhiteSpace(dbSearchQuery))
+            {
+                databaseCardsQuery = databaseCardsQuery.Where(c => c.Name.Contains(dbSearchQuery));
+            }
+
+            var databaseCards = await PaginatedList<LotCardViewModel>.CreateAsync(databaseCardsQuery, dbPage, 5);
+
+            var offeredCards = string.IsNullOrEmpty(offeredCardsData)
+                ? new List<LotCardViewModel>()
+                : JsonConvert.DeserializeObject<List<LotCardViewModel>>(offeredCardsData);
+
+            var requiredCards = string.IsNullOrEmpty(requiredCardsData)
+                ? new List<LotCardViewModel>()
+                : JsonConvert.DeserializeObject<List<LotCardViewModel>>(requiredCardsData);
+
+            var viewModel = new LotCreationViewModel
+            {
+                UserCards = userCards,
+                DatabaseCards = databaseCards,
+                OfferedCards = offeredCards,
+                RequiredCards = requiredCards,
+                UserSearchQuery = userSearchQuery,
+                DatabaseSearchQuery = dbSearchQuery
+            };
+
+            return View(viewModel);
+        }
+
+
+
 
         // POST: Lots/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.

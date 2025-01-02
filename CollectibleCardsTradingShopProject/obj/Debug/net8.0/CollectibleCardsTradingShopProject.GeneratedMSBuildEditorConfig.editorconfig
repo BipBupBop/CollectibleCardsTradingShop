@@ -104,6 +104,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG90c1xDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Professional/source/repos/CollectibleCardsTradingShopProject/CollectibleCardsTradingShopProject/Views/Lots/CreateLot.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG90c1xDcmVhdGVMb3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Professional/source/repos/CollectibleCardsTradingShopProject/CollectibleCardsTradingShopProject/Views/Lots/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG90c1xEZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -118,6 +122,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Professional/source/repos/CollectibleCardsTradingShopProject/CollectibleCardsTradingShopProject/Views/Lots/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG90c1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Professional/source/repos/CollectibleCardsTradingShopProject/CollectibleCardsTradingShopProject/Views/Lots/_CardListWithPaginationPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG90c1xfQ2FyZExpc3RXaXRoUGFnaW5hdGlvblBhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Professional/source/repos/CollectibleCardsTradingShopProject/CollectibleCardsTradingShopProject/Views/Rarities/Create.cshtml]
@@ -150,6 +158,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Professional/source/repos/CollectibleCardsTradingShopProject/CollectibleCardsTradingShopProject/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Professional/source/repos/CollectibleCardsTradingShopProject/CollectibleCardsTradingShopProject/Views/Users/AddCardToUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcQWRkQ2FyZFRvVXNlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Professional/source/repos/CollectibleCardsTradingShopProject/CollectibleCardsTradingShopProject/Views/Users/Create.cshtml]

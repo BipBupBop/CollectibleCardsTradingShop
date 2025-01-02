@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using CollectibleCardsTradingShopProject.Models;
+using CollectibleCardsTradingShopProject.ViewModels.CreateLot;
 
 namespace CollectibleCardsTradingShopProject.ViewModels
 {
@@ -13,7 +14,7 @@ namespace CollectibleCardsTradingShopProject.ViewModels
         public int Quantity { get; set; }
 
         [Required]
-        public LotCardStatusEnum Status { get; set; }
+        //public LotCardStatusEnum Status { get; set; }
 
         public virtual Card? Card { get; set; }
     }

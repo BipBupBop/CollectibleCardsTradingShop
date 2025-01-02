@@ -1,74 +1,242 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CollectibleCardsTradingShopProject.Controllers.CardInLotsController">
+    <Position X="1.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABBACAAAAAAAAAAAEAAEACAAEAAAQAAAA=</HashCode>
+      <FileName>Controllers\CardInLotsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.Controllers.CardsController">
+    <Position X="3" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAEAAAAAAABBACAAAAAAAAAAAEAAEACAAEAAAAAABA=</HashCode>
+      <FileName>Controllers\CardsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.Controllers.FranchisesController">
+    <Position X="4.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABBACAAAAAAAAAAAEAAEACAAEAAAACAAA=</HashCode>
+      <FileName>Controllers\FranchisesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.Controllers.HomeController">
+    <Position X="6.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAIAAAAQAAAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\HomeController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.Controllers.LotsController">
+    <Position X="8.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABBhACAAAAAAAAAAAEAAEACAAEAIAABABA=</HashCode>
+      <FileName>Controllers\LotsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.Controllers.RaritiesController">
+    <Position X="10" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABBACAAAAAAAAAEAEAAEACAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\RaritiesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.Controllers.UsersController">
+    <Position X="6.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAABBAAAAAAAAAAgAAEAAEACAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\UsersController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Class Name="CollectibleCardsTradingShopProject.Models.Card">
-    <Position X="1" Y="0.75" Width="1.5" />
+    <Position X="15.75" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gAACAAAAAAAAAAAAIAAAABQAAAAgQBAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Card.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CollectibleCardsTradingShopProject.Models.CardInLot">
-    <Position X="2.75" Y="0.75" Width="1.5" />
+    <Position X="17.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAFCAAAAAAAAAAAEAAAAAAAIAAgAAAAAAAAAgAgAAAA=</HashCode>
       <FileName>Models\CardInLot.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="CollectibleCardsTradingShopProject.Models.ErrorViewModel" Collapsed="true">
-    <Position X="12.75" Y="0.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Models\ErrorViewModel.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="CollectibleCardsTradingShopProject.Models.Franchise">
-    <Position X="1" Y="3.5" Width="1.5" />
+    <Position X="15.75" Y="7.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAAAAAAAAQIAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Franchise.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CollectibleCardsTradingShopProject.Models.Lot">
-    <Position X="2.75" Y="3.5" Width="1.5" />
+    <Position X="17.5" Y="7.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAABAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Lot.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CollectibleCardsTradingShopProject.Models.LotCardStatus">
-    <Position X="2.75" Y="5.25" Width="1.5" />
+    <Position X="17.5" Y="9" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gAACAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\LotCardStatus.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CollectibleCardsTradingShopProject.Models.Rarity">
-    <Position X="1" Y="5.25" Width="1.5" />
+    <Position X="15.75" Y="9" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAAAAAAAAQIAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Rarity.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CollectibleCardsTradingShopProject.Models.User">
-    <Position X="4.5" Y="5.25" Width="1.5" />
+    <Position X="19.25" Y="9" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
       <FileName>Models\User.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CollectibleCardsTradingShopProject.Models.UserCard">
-    <Position X="4.5" Y="0.75" Width="1.5" />
+    <Position X="19.25" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AABDAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAgAgAAAA=</HashCode>
       <FileName>Models\UserCard.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CollectibleCardsTradingShopProject.Models.UserLot">
-    <Position X="4.5" Y="3" Width="1.5" />
+    <Position X="19.25" Y="6.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAADAAAAAAAAAAAEAAAAAAgAAAgAAAAAQAAAAAAAAAA=</HashCode>
       <FileName>Models\UserLot.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="CollectibleCardsTradingShopProject.Data.ApplicationDbContext">
+    <Position X="11.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAACAQAQBAAAAAIAAAAAAMkAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Data\ApplicationDbContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.Middleware.DbInitializerExtensions">
+    <Position X="13.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Middleware\DbInitializerExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.Middleware.DbInitializerMiddleware">
+    <Position X="13.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAA=</HashCode>
+      <FileName>Middleware\DbInitializerMiddleware.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.ViewModels.Users.CreateUserViewModel">
+    <Position X="11.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAgCAQAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Users\CreateUserViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.ViewModels.Users.EditUserViewModel">
+    <Position X="10" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAACAAAAAAAAAAAAAAAAAAAAgAAQAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Users\EditUserViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.ViewModels.Users.UserCardViewModel">
+    <Position X="10" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>ViewModels\Users\UserCardViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.ViewModels.Users.UserDetailsViewModel">
+    <Position X="10" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAACAAAAAAAAAAAAAIAAAAAAAAAQAAEAAAAAA=</HashCode>
+      <FileName>ViewModels\Users\UserDetailsViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.ViewModels.Users.UserViewModel">
+    <Position X="13.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAACAAAAAAAAAAAAAAAAAAAAAAAQAAEAAAAAA=</HashCode>
+      <FileName>ViewModels\Users\UserViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.ViewModels.CardInLotViewModel">
+    <Position X="8.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAgAAAA=</HashCode>
+      <FileName>ViewModels\CardInLotViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.ViewModels.CardsViewModel">
+    <Position X="13.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gIAAAAAAAAAAAAAAAAAACAAIAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\CardsViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.ViewModels.CreateLotViewModel">
+    <Position X="11.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAIAABAgAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\CreateLotViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.ViewModels.LotFilterViewModel">
+    <Position X="8.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAQAAAAAAAAAAAACAAAAAAAQAAAAAAAAAIAAAQ=</HashCode>
+      <FileName>ViewModels\LotFilterViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.ViewModels.LotViewModel">
+    <Position X="13.5" Y="7" Width="1.5" />
+    <NestedTypes>
+      <Class Name="CollectibleCardsTradingShopProject.ViewModels.LotViewModel.CardInfo" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ViewModels\LotViewModel.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAASAAAEAIAAAAAIIAQAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>ViewModels\LotViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.ViewModels.PageViewModel">
+    <Position X="8.25" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAgAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\PageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollectibleCardsTradingShopProject.ViewModels.SortViewModel">
+    <Position X="11.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAACAAAAAAAACAAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\SortViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="CollectibleCardsTradingShopProject.ViewModels.LotCardStatusEnum">
+    <Position X="1.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEBAAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\CreateLotViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CollectibleCardsTradingShopProject.ViewModels.SortState">
+    <Position X="3.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAABAAAAAAAEAAACAEYAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\SortViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

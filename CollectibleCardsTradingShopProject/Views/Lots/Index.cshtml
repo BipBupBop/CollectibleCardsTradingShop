@@ -52,7 +52,6 @@
                     <td>@lot.CardsSummary</td>
                     <td>@lot.ClosedByUserName</td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@lot.LotId" class="btn btn-warning btn-sm">Edit</a>
                         <a asp-action="Details" asp-route-id="@lot.LotId" class="btn btn-info btn-sm">Details</a>
                         <a asp-action="Delete" asp-route-id="@lot.LotId" class="btn btn-danger btn-sm" 
                            onclick="return confirm('Are you sure you want to delete this lot?');">Delete</a>

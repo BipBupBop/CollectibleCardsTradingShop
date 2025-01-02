@@ -1,0 +1,354 @@
+﻿@model CollectibleCardsTradingShopProject.ViewModels.CreateLot.LotCreationViewModel
+@using Newtonsoft.Json
+
+<h1>Create New Lot</h1>
+
+<form method="get" asp-action="CreateLot">
+    <input type="hidden" id="offeredCardsData" name="offeredCardsData" value="@Html.Raw(JsonConvert.SerializeObject(Model.OfferedCards))" />
+    <input type="hidden" id="requiredCardsData" name="requiredCardsData" value="@Html.Raw(JsonConvert.SerializeObject(Model.RequiredCards))" />
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Your Cards</div>
+                <div class="card-body">
+                    <ul class="list-group" id="user-cards-list">
+                        @foreach (var card in Model.UserCards)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <img src="@card.Image" alt="@card.Name" style="width:50px;" />
+                                    @card.Name (@card.Franchise) - @card.Rarity
+                                </div>
+                                <button type="button" class="btn btn-success btn-sm add-offered-card"
+                                        data-card-id="@card.Id"
+                                        data-card-name="@card.Name"
+                                        data-card-franchise="@card.Franchise"
+                                        data-card-rarity="@card.Rarity"
+                                        data-card-image="@card.Image">
+                                    Add
+                                </button>
+                            </li>
+                        }
+                    </ul>
+                    <nav aria-label="Database Cards Pagination" class="mt-3">
+                        <ul class="pagination">
+                            @if (Model.DatabaseCards.HasPreviousPage)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" asp-action="CreateLot"
+                                       asp-route-dbPage="@(Model.DatabaseCards.PageIndex - 1)"
+                                       asp-route-dbSearchQuery="@Model.DatabaseSearchQuery">
+                                        Previous
+                                    </a>
+                                </li>
+                            }
+
+                            <li class="page-item @(Model.DatabaseCards.PageIndex == 1 ? "active" : "")">
+                                <a class="page-link" asp-action="CreateLot"
+                                   asp-route-dbPage="1"
+                                   asp-route-dbSearchQuery="@Model.DatabaseSearchQuery">1</a>
+                            </li>
+
+                            @if (Model.DatabaseCards.PageIndex > 3)
+                            {
+                                <li class="page-item disabled"><span class="page-link">...</span></li>
+                            }
+
+                            @for (int i = Math.Max(2, Model.DatabaseCards.PageIndex - 1);
+                            i <= Math.Min(Model.DatabaseCards.TotalPages - 1, Model.DatabaseCards.PageIndex + 1);
+                            i++)
+                            {
+                                <li class="page-item @(Model.DatabaseCards.PageIndex == i ? "active" : "")">
+                                    <a class="page-link" asp-action="CreateLot"
+                                       asp-route-dbPage="@i"
+                                       asp-route-dbSearchQuery="@Model.DatabaseSearchQuery">@i</a>
+                                </li>
+                            }
+
+                            @if (Model.DatabaseCards.PageIndex < Model.DatabaseCards.TotalPages - 2)
+                            {
+                                <li class="page-item disabled"><span class="page-link">...</span></li>
+                            }
+
+                            <li class="page-item @(Model.DatabaseCards.PageIndex == Model.DatabaseCards.TotalPages ? "active" : "")">
+                                <a class="page-link" asp-action="CreateLot"
+                                   asp-route-dbPage="@Model.DatabaseCards.TotalPages"
+                                   asp-route-dbSearchQuery="@Model.DatabaseSearchQuery">
+                                    @Model.DatabaseCards.TotalPages
+                                </a>
+                            </li>
+
+                            @if (Model.DatabaseCards.HasNextPage)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" asp-action="CreateLot"
+                                       asp-route-dbPage="@(Model.DatabaseCards.PageIndex + 1)"
+                                       asp-route-dbSearchQuery="@Model.DatabaseSearchQuery">
+                                        Next
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+
+                        <form method="get" class="d-inline-block" style="margin-left: 10px;">
+                            <input type="hidden" name="dbSearchQuery" value="@Model.DatabaseSearchQuery" />
+                            <div class="input-group">
+                                <input type="number" name="dbPage" class="form-control"
+                                       placeholder="Page" min="1"
+                                       max="@Model.DatabaseCards.TotalPages"
+                                       value="@Model.DatabaseCards.PageIndex" />
+                                <button type="submit" class="btn btn-primary">Go</button>
+                            </div>
+                        </form>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Offered Cards</div>
+                <div class="card-body">
+                    <ul class="list-group" id="offered-cards-list">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Database Cards</div>
+                <div class="card-body">
+                    <ul class="list-group" id="database-cards-list">
+                        @foreach (var card in Model.DatabaseCards)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <img src="@card.Image" alt="@card.Name" style="width:50px;" />
+                                    @card.Name (@card.Franchise) - @card.Rarity
+                                </div>
+                                <button type="button" class="btn btn-primary btn-sm add-required-card"
+                                        data-card-id="@card.Id"
+                                        data-card-name="@card.Name"
+                                        data-card-franchise="@card.Franchise"
+                                        data-card-rarity="@card.Rarity"
+                                        data-card-image="@card.Image">
+                                    Add
+                                </button>
+                            </li>
+                        }
+                    </ul>
+                    <nav aria-label="Database Cards Pagination" class="mt-3">
+                        <ul class="pagination">
+                            @if (Model.DatabaseCards.HasPreviousPage)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" asp-action="CreateLot"
+                                       asp-route-dbPage="@(Model.DatabaseCards.PageIndex - 1)"
+                                       asp-route-dbSearchQuery="@Model.DatabaseSearchQuery">
+                                        Previous
+                                    </a>
+                                </li>
+                            }
+
+                            <li class="page-item @(Model.DatabaseCards.PageIndex == 1 ? "active" : "")">
+                                <a class="page-link" asp-action="CreateLot"
+                                   asp-route-dbPage="1"
+                                   asp-route-dbSearchQuery="@Model.DatabaseSearchQuery">1</a>
+                            </li>
+
+                            @if (Model.DatabaseCards.PageIndex > 3)
+                            {
+                                <li class="page-item disabled"><span class="page-link">...</span></li>
+                            }
+
+                            @for (int i = Math.Max(2, Model.DatabaseCards.PageIndex - 1);
+                            i <= Math.Min(Model.DatabaseCards.TotalPages - 1, Model.DatabaseCards.PageIndex + 1);
+                            i++)
+                            {
+                                <li class="page-item @(Model.DatabaseCards.PageIndex == i ? "active" : "")">
+                                    <a class="page-link" asp-action="CreateLot"
+                                       asp-route-dbPage="@i"
+                                       asp-route-dbSearchQuery="@Model.DatabaseSearchQuery">@i</a>
+                                </li>
+                            }
+
+                            @if (Model.DatabaseCards.PageIndex < Model.DatabaseCards.TotalPages - 2)
+                            {
+                                <li class="page-item disabled"><span class="page-link">...</span></li>
+                            }
+
+                            <li class="page-item @(Model.DatabaseCards.PageIndex == Model.DatabaseCards.TotalPages ? "active" : "")">
+                                <a class="page-link" asp-action="CreateLot"
+                                   asp-route-dbPage="@Model.DatabaseCards.TotalPages"
+                                   asp-route-dbSearchQuery="@Model.DatabaseSearchQuery">
+                                    @Model.DatabaseCards.TotalPages
+                                </a>
+                            </li>
+
+                            @if (Model.DatabaseCards.HasNextPage)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" asp-action="CreateLot"
+                                       asp-route-dbPage="@(Model.DatabaseCards.PageIndex + 1)"
+                                       asp-route-dbSearchQuery="@Model.DatabaseSearchQuery">
+                                        Next
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+
+                        <form method="get" class="d-inline-block" style="margin-left: 10px;">
+                            <input type="hidden" name="dbSearchQuery" value="@Model.DatabaseSearchQuery" />
+                            <div class="input-group">
+                                <input type="number" name="dbPage" class="form-control"
+                                       placeholder="Page" min="1"
+                                       max="@Model.DatabaseCards.TotalPages"
+                                       value="@Model.DatabaseCards.PageIndex" />
+                                <button type="submit" class="btn btn-primary">Go</button>
+                            </div>
+                        </form>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Required Cards</div>
+                <div class="card-body">
+                    <ul class="list-group" id="required-cards-list">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" class="btn btn-success">Submit Lot</button>
+        <a asp-action="Index" class="btn btn-secondary">Back to Lots</a>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const offeredCardsData = document.querySelector("#offeredCardsData");
+            const requiredCardsData = document.querySelector("#requiredCardsData");
+
+            document.querySelectorAll(".pagination a").forEach(link => {
+                const url = new URL(link.href);
+                url.searchParams.set("offeredCardsData", offeredCardsData.value);
+                url.searchParams.set("requiredCardsData", requiredCardsData.value);
+                link.href = url.toString();
+            });
+        });
+    </script>
+</form>
+
+<script>
+            document.addEventListener("DOMContentLoaded", function () {
+        const offeredCardsList = document.querySelector("#offered-cards-list");
+        const requiredCardsList = document.querySelector("#required-cards-list");
+        const offeredCardsData = document.querySelector("#offeredCardsData");
+        const requiredCardsData = document.querySelector("#requiredCardsData");
+
+        // Восстановление ранее добавленных карт
+        restoreCardsFromHiddenField(offeredCardsData, offeredCardsList, "remove-offered-card");
+        restoreCardsFromHiddenField(requiredCardsData, requiredCardsList, "remove-required-card");
+
+        // Добавление карт в список предложенных
+        document.querySelectorAll(".add-offered-card").forEach(button => {
+            button.addEventListener("click", function () {
+                const card = createCardElement(this, "remove-offered-card", "Remove");
+                offeredCardsList.appendChild(card);
+                updateHiddenField(offeredCardsList, offeredCardsData);
+                this.closest("li").remove();
+            });
+        });
+
+        // Добавление карт в список требуемых
+        document.querySelectorAll(".add-required-card").forEach(button => {
+            button.addEventListener("click", function () {
+                const card = createCardElement(this, "remove-required-card", "Remove");
+                requiredCardsList.appendChild(card);
+                updateHiddenField(requiredCardsList, requiredCardsData);
+                this.closest("li").remove();
+            });
+        });
+
+        // Удаление карт из предложенных
+        offeredCardsList.addEventListener("click", function (e) {
+            if (e.target.classList.contains("remove-offered-card")) {
+                e.target.closest("li").remove();
+                updateHiddenField(offeredCardsList, offeredCardsData);
+            }
+        });
+
+        // Удаление карт из требуемых
+        requiredCardsList.addEventListener("click", function (e) {
+            if (e.target.classList.contains("remove-required-card")) {
+                e.target.closest("li").remove();
+                updateHiddenField(requiredCardsList, requiredCardsData);
+            }
+        });
+
+        // Сохранение данных при переходе между страницами
+        document.querySelectorAll(".pagination a").forEach(link => {
+            const url = new URL(link.href);
+            url.searchParams.set("offeredCardsData", offeredCardsData.value);
+            url.searchParams.set("requiredCardsData", requiredCardsData.value);
+            link.href = url.toString();
+        });
+
+        // Функции для работы со списками и скрытыми полями
+        function createCardElement(button, removeClass, removeText) {
+            const cardId = button.dataset.cardId;
+            const cardName = button.dataset.cardName;
+            const cardFranchise = button.dataset.cardFranchise;
+            const cardRarity = button.dataset.cardRarity;
+            const cardImage = button.dataset.cardImage;
+
+            const li = document.createElement("li");
+            li.classList.add("list-group-item", "d-flex", "justify-content-between");
+            li.innerHTML = `
+                <div>
+                    <img src="${cardImage}" alt="${cardName}" style="width:50px;" />
+                    ${cardName} (${cardFranchise}) - ${cardRarity}
+                </div>
+                <button type="button" class="btn btn-danger btn-sm ${removeClass}" data-card-id="${cardId}">
+                    ${removeText}
+                </button>
+            `;
+            return li;
+        }
+
+        function updateHiddenField(list, hiddenField) {
+            const cardsData = [];
+            list.querySelectorAll("li").forEach(item => {
+                const button = item.querySelector("button");
+                cardsData.push({
+                    id: button.dataset.cardId,
+                    name: button.dataset.cardName,
+                    franchise: button.dataset.cardFranchise,
+                    rarity: button.dataset.cardRarity,
+                    image: button.dataset.cardImage
+                });
+            });
+            hiddenField.value = JSON.stringify(cardsData);
+        }
+
+        function restoreCardsFromHiddenField(hiddenField, list, removeClass) {
+            if (hiddenField.value) {
+                const cardsData = JSON.parse(hiddenField.value);
+                cardsData.forEach(card => {
+                    const li = createCardElement({
+                        dataset: card
+                    }, removeClass, "Remove");
+                    list.appendChild(li);
+                });
+            }
+        }
+    });
+
+</script>

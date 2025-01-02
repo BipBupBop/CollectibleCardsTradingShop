@@ -81,9 +81,9 @@ namespace CollectibleCardsTradingShopProject.Controllers
                 .Select(ul => ul.Lot.Id) // или просто .Select(ul => ul.Id), если вам нужно Id записи в таблице UserLots
                 .ToList();
 
-            ViewData["CardId"] = new SelectList(_context.Cards, "Id", "Id");
+            ViewData["CardId"] = new SelectList(_context.Cards, "Id", "Name");
             ViewData["LotId"] = new SelectList(_context.Lots.Where(l => userLotsIds.Contains(l.Id)), "Id", "Id");
-            ViewData["LotCardStatusId"] = new SelectList(_context.LotCardStatuses, "Id", "Id");
+            ViewData["LotCardStatusId"] = new SelectList(_context.LotCardStatuses, "Id", "Status");
 
             return View();
         }
